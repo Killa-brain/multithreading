@@ -27,8 +27,8 @@ public class CustomThreadPool {
     }
 
     public void execute(Runnable task) {
-        lock.lock();
         try {
+            lock.lock();
             if (isShutDown) {
                 throw new IllegalStateException("CustomThreadPool is already shut down");
             }
@@ -40,8 +40,8 @@ public class CustomThreadPool {
     }
 
     public void shutdown() {
-        lock.lock();
         try {
+            lock.lock();
             isShutDown = true;
             taskAvailable.signalAll();
         } finally {
@@ -64,8 +64,8 @@ public class CustomThreadPool {
         public void run() {
             Runnable task;
             while (true) {
-                lock.lock();
                 try {
+                    lock.lock();
                     while (tasks.isEmpty() && !isShutDown) {
                         try {
                             taskAvailable.await();
